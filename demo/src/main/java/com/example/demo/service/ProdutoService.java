@@ -12,28 +12,33 @@ import java.util.List;
 @Service
 public class ProdutoService {
     @Autowired
-    private ProdutoRepository repository ;
+    private ProdutoRepository repository; // Injeção de dependência do repositório de produtos
 
-    public Produto save(Produto produto) throws Exception
-    {
-        if (produto.getNome() == null || produto.getPreco() == null)
-            throw new ProductNullException();
-
-        if (produto.getPreco()< 0 ) {
-            throw new ProductPriceException();
+    // Método para salvar um produto, lança exceções em caso de erro
+    public Produto save(Produto produto) throws Exception {
+        // Verifica se o nome ou preço do produto é nulo
+        if (produto.getNome() == null || produto.getPreco() == null) {
+            throw new ProductNullException(); // Lança exceção se algum campo obrigatório for nulo
         }
-        return  repository.save(produto);
+
+        // Verifica se o preço é negativo
+        if (produto.getPreco() < 0) {
+            throw new ProductPriceException(); // Lança exceção se o preço for negativo
+        }
+
+        // Salva e retorna o produto
+        return repository.save(produto);
     }
 
-
-    public Produto FindById(Long id)
-    {
+    // Método para buscar um produto por ID
+    public Produto findById(Long id) {
+        // Retorna o produto encontrado ou null se não existir
         return repository.findById(id).orElse(null);
-
     }
-    public List<Produto>  FindAll()
-    {
-        return repository.findAll();
 
+    // Método para buscar todos os produtos
+    public List<Produto> findAll() {
+        // Retorna a lista de produtos
+        return repository.findAll();
     }
 }
